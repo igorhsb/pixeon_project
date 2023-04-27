@@ -7,7 +7,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {  
     ui->setupUi(this);
-
+    this->ui->imgListCB->setVisible(false);
 }
 
 MainWindow::~MainWindow()
@@ -19,14 +19,25 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_addImgBTN_clicked()
 {
-    this->fileName = QFileDialog::getOpenFileName(this, tr("Open Image"), "/home/jana", tr("Image Files (*.png *.jpg *.bmp)"));
-    //QPixmap pix(":/img1.png");
-    this->ui->imgLabel->setText(fileName);
+    QFileDialog dialog(this);
+    dialog.setFileMode(QFileDialog::ExistingFiles);
+    dialog.setNameFilter(tr("Images (*.jpg *.jpeg)"));
+    if (dialog.exec())
+        fileNames = dialog.selectedFiles();
 
-    //this->ui->imgLabel->setStyleSheet("border-image:url(:/2.png);");
-    //this->ui->imgLabel->setPixmap(pix);
+    this->ui->imgLabel->setAlignment(Qt::AlignCenter);
+    if (!fileNames.isEmpty()) {
+        this->ui->imgListCB->setVisible(true);
+        this->ui->imgListCB->addItems(fileNames);
+    }
+}
 
-    //printf(asd);
 
+void MainWindow::on_imgListCB_currentIndexChanged(int index)
+{
+    if(this->pix.load(fileNames[index])) {
+        this->pix = this->pix.scaled(this->ui->imgLabel->size(), Qt::KeepAspectRatio);
+        this->ui->imgLabel->setPixmap(this->pix);
+    }
 }
 

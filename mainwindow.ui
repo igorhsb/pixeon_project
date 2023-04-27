@@ -17,10 +17,10 @@
    <widget class="QLabel" name="imgLabel">
     <property name="geometry">
      <rect>
-      <x>300</x>
-      <y>140</y>
-      <width>231</width>
-      <height>16</height>
+      <x>230</x>
+      <y>0</y>
+      <width>379</width>
+      <height>241</height>
      </rect>
     </property>
     <property name="text">
@@ -30,9 +30,9 @@
    <widget class="QPushButton" name="addImgBTN">
     <property name="geometry">
      <rect>
-      <x>280</x>
-      <y>260</y>
-      <width>141</width>
+      <x>210</x>
+      <y>380</y>
+      <width>379</width>
       <height>24</height>
      </rect>
     </property>
@@ -40,17 +40,14 @@
      <string>Adicionar imagem</string>
     </property>
    </widget>
-   <widget class="QLabel" name="selecImgLabel_2">
+   <widget class="QComboBox" name="imgListCB">
     <property name="geometry">
      <rect>
-      <x>220</x>
-      <y>260</y>
-      <width>49</width>
-      <height>16</height>
+      <x>210</x>
+      <y>350</y>
+      <width>381</width>
+      <height>24</height>
      </rect>
-    </property>
-    <property name="text">
-     <string/>
     </property>
    </widget>
   </widget>

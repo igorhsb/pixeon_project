@@ -23,9 +23,12 @@ public:
 private slots:
     void on_addImgBTN_clicked();
 
+    void on_imgListCB_currentIndexChanged(int index);
+
 private:
     Ui::MainWindow *ui;
-    QString fileName = "Hello";
+    QStringList fileNames;
+    QPixmap pix;
 };
 
 #endif // MAINWINDOW_H
