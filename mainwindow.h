@@ -7,7 +7,8 @@
 #include <QString>
 #include <QPainter>
 #include <QTransform>
-#include <QSize>
+#include <QImage>
+#include <QGraphicsColorizeEffect>
 
 //#define imgPlaceholdPath ".."
 
@@ -46,7 +47,7 @@ private:
     QStringList fileNames;
     QPixmap pix;
     int imgIndex, yDesloc, xDesloc, rotateAngle;
-    double scale;
+    double scale, brightness;
 
     void InitComponents();
     void UpdateScreen();
