@@ -21,10 +21,9 @@ void MainWindow::InitComponents()
     this->xDesloc = 0;
     this->yDesloc = 0;
     this->scale = 1.0;
-    this->ui->imgListCB->setHidden(true);
-    this->ui->zoomSL->setHidden(true);
-    this->ui->xPanSL->setHidden(true);
-    this->ui->yPanSL->setHidden(true);
+    this->rotateAngle = 0;
+    this->ui->rotateSL->setMaximum(360);
+    this->ui->rotateSL->setMinimum(0);
     this->ui->zoomSL->setMaximum(200);
     this->ui->zoomSL->setMinimum(0);
     this->ui->xPanSL->setMaximum(400);
@@ -39,6 +38,7 @@ void MainWindow::ResetParameters()
     this->xDesloc = 0;
     this->yDesloc = 0;
     this->scale = 1.0;
+    this->rotateAngle = 0;
     this->ui->xPanSL->setValue(this->xDesloc);
     this->ui->yPanSL->setValue(this->yDesloc);
     this->ui->zoomSL->setValue(0);
@@ -48,14 +48,23 @@ void MainWindow::ResetParameters()
 void MainWindow::UpdateScreen() {
     if(this->pix.load(fileNames[this->imgIndex]))
     {
-        this->pix = this->pix.scaled(this->scale*this->ui->imgLabel->size(),Qt::KeepAspectRatio);
-        QPixmap displacedImage(this->pix.width(), this->pix.height());
+        this->pix = this->pix.scaled(this->scale*this->ui->imgLabel->size(),Qt::KeepAspectRatio);    // Aplica o zoom de acordo com o parâmetro
 
-        QPainter painter(&displacedImage);
+        QPixmap rotatedPixmap(this->pix.size());                                                    // Linhas 53-59: Aplica a rotação ao pixmap de acordo com o parâmetro
+        rotatedPixmap.fill(QColor::fromRgb(0, 0, 0, 0));
+        QPainter* p = new QPainter(&rotatedPixmap);
+        p->translate(this->pix.height()/2,this->pix.height()/2);
+        p->rotate(this->rotateAngle);
+        p->translate(-this->pix.height()/2,-this->pix.height()/2);
+        p->drawPixmap(0, 0, this->pix);
 
-        painter.drawPixmap(this->xDesloc, this->yDesloc, this->pix.width(), this->pix.height(), this->pix);
-        painter.end();
+        QPixmap displacedImage(rotatedPixmap.size());                                              // Linhas 61-64: Aplica os deslocamentos ao pixmap de acordo com os parâmetros de pan(x,y)
+        displacedImage.fill(QColor::fromRgb(0, 0, 0, 0));
+        p = new QPainter(&displacedImage);
+        p->drawPixmap(this->xDesloc, this->yDesloc, this->pix.width(), this->pix.height(), this->pix);
+        p->end();
         this->pix = displacedImage;
+
         this->ui->imgLabel->setPixmap(this->pix);
     }
 }
@@ -78,12 +87,6 @@ void MainWindow::on_addImgBTN_clicked()
             }
         }
     }
-    if (!fileNames.isEmpty()) {
-        this->ui->imgListCB->setHidden(false);
-        this->ui->zoomSL->setHidden(false);
-        this->ui->xPanSL->setHidden(false);
-        this->ui->yPanSL->setHidden(false);
-    }
 }
 
 
@@ -96,22 +99,28 @@ void MainWindow::on_imgListCB_currentIndexChanged(int index)
 
 void MainWindow::on_zoomSL_valueChanged(int value)
 {
-    this->scale = 1.0 + double(value/100.0);
-    this->UpdateScreen();
+    if (!fileNames.isEmpty()) {
+        this->scale = 1.0 + double(value/100.0);
+        this->UpdateScreen();
+    }
 }
 
 
 void MainWindow::on_xPanSL_valueChanged(int value)
 {
-    this->xDesloc = value;
-    this->UpdateScreen();
+    if (!fileNames.isEmpty()) {
+        this->xDesloc = value;
+        this->UpdateScreen();
+    }
 }
 
 
 void MainWindow::on_yPanSL_valueChanged(int value)
 {
-    this->yDesloc = value;
-    this->UpdateScreen();
+    if (!fileNames.isEmpty()) {
+        this->yDesloc = -value;
+        this->UpdateScreen();
+    }
 }
 
 
@@ -123,14 +132,9 @@ void MainWindow::on_pushButton_clicked()
 
 void MainWindow::on_rotateSL_valueChanged(int value)
 {
-    if(this->pix.load(fileNames[this->imgIndex]))
-    {
-        this->pix = this->pix.scaled(this->ui->imgLabel->size(),Qt::KeepAspectRatio);
-        QTransform transform;
-        QTransform trans = transform.rotate(45);
-        this->pix = this->pix.scaled(sqrt(this->pix.size().width()), sqrt(this->pix.size().height()));
-        QPixmap *transPixmap = new QPixmap(this->pix.transformed(trans));
-        this->ui->imgLabel->setPixmap(this->pix);
+    if (!fileNames.isEmpty()) {
+        this->rotateAngle = value;
+        this->UpdateScreen();
     }
 }
 

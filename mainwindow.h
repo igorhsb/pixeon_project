@@ -7,6 +7,7 @@
 #include <QString>
 #include <QPainter>
 #include <QTransform>
+#include <QSize>
 
 //#define imgPlaceholdPath ".."
 
@@ -44,7 +45,7 @@ private:
     Ui::MainWindow *ui;
     QStringList fileNames;
     QPixmap pix;
-    int imgIndex, yDesloc, xDesloc;
+    int imgIndex, yDesloc, xDesloc, rotateAngle;
     double scale;
 
     void InitComponents();
