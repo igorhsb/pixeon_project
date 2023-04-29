@@ -41,6 +41,7 @@ void MainWindow::ResetParameters()
     this->rotateAngle = 0;
     this->ui->xPanSL->setValue(this->xDesloc);
     this->ui->yPanSL->setValue(this->yDesloc);
+    this->ui->rotateSL->setValue(this->rotateAngle);
     this->ui->zoomSL->setValue(0);
     this->UpdateScreen();
 }
@@ -50,6 +51,7 @@ void MainWindow::UpdateScreen() {
     {
         this->pix = this->pix.scaled(this->scale*this->ui->imgLabel->size(),Qt::KeepAspectRatio);    // Aplica o zoom de acordo com o parâmetro
 
+
         QPixmap rotatedPixmap(this->pix.size());                                                    // Linhas 53-59: Aplica a rotação ao pixmap de acordo com o parâmetro
         rotatedPixmap.fill(QColor::fromRgb(0, 0, 0, 0));
         QPainter* p = new QPainter(&rotatedPixmap);
@@ -57,14 +59,16 @@ void MainWindow::UpdateScreen() {
         p->rotate(this->rotateAngle);
         p->translate(-this->pix.height()/2,-this->pix.height()/2);
         p->drawPixmap(0, 0, this->pix);
+        p->end();
+        this->pix = rotatedPixmap;
 
-        QPixmap displacedImage(rotatedPixmap.size());                                              // Linhas 61-64: Aplica os deslocamentos ao pixmap de acordo com os parâmetros de pan(x,y)
+        QPixmap displacedImage(this->pix.size());                                              // Linhas 61-64: Aplica os deslocamentos ao pixmap de acordo com os parâmetros de pan(x,y)
         displacedImage.fill(QColor::fromRgb(0, 0, 0, 0));
         p = new QPainter(&displacedImage);
         p->drawPixmap(this->xDesloc, this->yDesloc, this->pix.width(), this->pix.height(), this->pix);
         p->end();
         this->pix = displacedImage;
-
+        delete p;
         this->ui->imgLabel->setPixmap(this->pix);
     }
 }
