@@ -2,24 +2,23 @@
 
 ## Introdução
 
-Este relatório visa explicar o algoritmo desenvolvido em C++ na plataforma QtCreator como desafio a vaga de Analista Desenvolvedor C++ Júnior na empresa Pixeon desenvolvido por Igor Henrique Silva Barbosa.
+Este relatório tem como objetivo explicar o algoritmo desenvolvido em C++ na plataforma QtCreator, como desafio para a vaga de Analista Desenvolvedor C++ Júnior na empresa Pixeon, desenvolvido por Igor Henrique Silva Barbosa.
 
 ## Métodologia 
 
-Inicialmente foi criado um projeto do tipo "Qt Widgets Application" que permite a criação de uma aplicação baseada em uma interface gráfica. Dessa forma, o projeto conta com 4 arquivos principais, mainwindow.h, mainwindow.cpp, mainwindow.ui e main.cpp. Abaixo temos uma breve explicação de cada um desses arquivos.
+Inicialmente, foi criado um projeto do tipo "Qt Widgets Application", que permite a criação de uma aplicação baseada em uma interface gráfica. Dessa forma, o projeto conta com 4 arquivos principais: mainwindow.h, mainwindow.cpp, mainwindow.ui e main.cpp. Abaixo, temos uma breve explicação de cada um desses arquivos:
  - **mainwindow.h:**  Declara todas as funções e váriaveis da classe MainWindow, assim como realiza a importação de todas as bibliotecas necessárias;
  - **mainwindow.cpp:** Define o comportamento de cada função e, consequentemente, o comportamento do aplicação;
- - **mainwindow.ui** Define a interface gráfica da aplicação, assim como os elementos que a compoem;
- - **main.cpp** Instância o objeto da aplicação.
+ - **mainwindow.ui** Define a interface gráfica da aplicação, assim como os elementos que a compõem;
+ - **main.cpp** Instancia o objeto da aplicação.
 
 ### Estratégias Utilizadas
 
-Todas as técnicas utilizadas são advindas de funções e bibliotecas nativas do próprio Qt. Nesse sentido, a interface gráfica foi constituída de vários QLabel's para expressar textos; um QLabel especifico para visualizar a imagem; um QPushButton para adicionar as imagens; um  QComboBox para selecionar a imagem a ser visualizada; cinco QSlider's para representar as funcionalidades de zoom, pan (x e y), brilho e rotação; um QPushButton para resetar os parâmetros dos slider's.
-Nesse contexto, podemos segmentar a explicação do funcionamento da aplicação nos seguintes tópicos: Inicialização dos componentes, Adição e seleção de imagens, Visualização de imagens, Modificação dos parâmetros da imagem e Resete de parâmetros.
+Todas as técnicas utilizadas são advindas de funções e bibliotecas nativas do próprio Qt. Nesse sentido, a interface gráfica foi constituída de vários QLabels para expressar textos, um QLabel específico para visualizar a imagem, um QPushButton para adicionar as imagens, um QComboBox para selecionar a imagem a ser visualizada, cinco QSliders para representar as funcionalidades de zoom, pan (x e y), brilho e rotação, e um QPushButton para resetar os parâmetros dos sliders. Nesse contexto, podemos segmentar a explicação do funcionamento da aplicação nos seguintes tópicos: Inicialização dos componentes, Adição e seleção de imagens, Visualização de imagens, Modificação dos parâmetros da imagem e Reset de parâmetros.
 
 #### Inicialização dos componentes
 
-Visando centralizar as configurações iniciais dos componentes da interface gráfica e as variáveis da classe MainWindow, foi criado a função **InitComponents**. Essa função define o valor inicial de variável do sistema, como zoom, pan e brilho, por exemplo. Assim como a configuração dos elementos gráficos da aplicação, por exemplo, os limites dos QSlider's (valor inicial e valor final) e o alinhamento e estilo de textos de QLabel's. 
+Visando centralizar as configurações iniciais dos componentes da interface gráfica e as variáveis da classe MainWindow, foi criada a função InitComponents. Essa função define o valor inicial de variáveis do sistema, como zoom, pan e brilho, por exemplo. Assim como a configuração dos elementos gráficos da aplicação, por exemplo, os limites dos QSliders (valor inicial e valor final) e o alinhamento e estilo de textos dos QLabels. 
 
 #### Adição e seleção de imagens
 Essa funcionalidade é acionada pelo disparo do evento de Clicked do botão de Adicionar imagens.  Esse evento inicialmente instancia um objeto da classe QFileDialog configurado para aceitar apenas arquivos existentes com as extensões .jpg e .jpeg. Ná prática essas duas extensões são equivalentes, entretanto, o QFileDialog realiza a diferenciação das mesmas, portanto, ambas foram adicionadas. O QFileDialog dispara a abertura de um modal de seleção de arquivos que limilitará a seleção aos formatos configurados e permite seleção múltipla. Sendo assim, o QFileDialog retorna uma lista de strings com o endereço de cada imagem selecionada, essa lista é salva em um atributo da classe MainWindow chamada filesNames de forma exclusiva, isto é, se o caminho de uma imagem já estiver nessa lista ela não pode ser adicionada novamente. Por fim, essa funcionalidade pode ser chamada a qualquer momento da execução da aplicação, passando o número de imagens desejado.
