@@ -2,7 +2,7 @@
 
 ## Introdução
 
-Este relatório visa explicar o algoritmo desenvolvido em C++ na plataforma QtCreator como desafio a vaga de Analista Desenvolvedor C++ Júnior na empresa Pixeon desenvolvido por Igor henrique Silva Barbosa.
+Este relatório visa explicar o algoritmo desenvolvido em C++ na plataforma QtCreator como desafio a vaga de Analista Desenvolvedor C++ Júnior na empresa Pixeon desenvolvido por Igor Henrique Silva Barbosa.
 
 ## Métodologia 
 
